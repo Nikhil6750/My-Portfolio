@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+  body {
+    @apply bg-paper text-ink font-sans font-light leading-relaxed;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  section {
+    scroll-margin-top: 100px; /* Offset for fixed navbar */
+  }
+  
+  ::selection {
+    @apply bg-orange text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-orange to-red;
+  }
+  
+  .data-grid-bg {
+    background-size: 35px 35px;
+    background-image: radial-gradient(circle, rgba(13, 13, 13, 0.15) 1px, transparent 1px);
+  }
+
+  .noise-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+}

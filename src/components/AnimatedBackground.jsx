@@ -1,22 +1,22 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+
+const randomFromSeed = (seed) => {
+  const value = Math.sin(seed) * 10000;
+  return value - Math.floor(value);
+};
+
+const bubbles = Array.from({ length: 15 }).map((_, i) => ({
+  id: i,
+  size: randomFromSeed(i + 1) * 120 + 40,
+  left: `${randomFromSeed(i + 11) * 100}%`,
+  delay: randomFromSeed(i + 21) * 10,
+  duration: randomFromSeed(i + 31) * 20 + 25,
+  opacity: randomFromSeed(i + 41) * 0.05 + 0.02,
+  drift: randomFromSeed(i + 51) * 100 - 50,
+}));
 
 export function AnimatedBackground() {
   const prefersReducedMotion = useReducedMotion();
-  const [bubbles, setBubbles] = useState([]);
-
-  useEffect(() => {
-    // Generate static bubble data once on mount so it doesn't cause hydration mismatch or erratic re-renders
-    const newBubbles = Array.from({ length: 15 }).map((_, i) => ({
-      id: i,
-      size: Math.random() * 120 + 40, // 40px to 160px
-      left: `${Math.random() * 100}%`,
-      delay: Math.random() * 10,
-      duration: Math.random() * 20 + 25, // 25s to 45s
-      opacity: Math.random() * 0.05 + 0.02, // 0.02 to 0.07 opacity
-    }));
-    setBubbles(newBubbles);
-  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden bg-paper">
@@ -58,7 +58,7 @@ export function AnimatedBackground() {
           animate={prefersReducedMotion ? { y: "50vh", opacity: bubble.opacity } : {
             y: ["100vh", "-20vh"],
             opacity: [0, bubble.opacity, bubble.opacity, 0],
-            x: ["0px", `${Math.random() * 100 - 50}px`, "0px"]
+            x: ["0px", `${bubble.drift}px`, "0px"]
           }}
           transition={prefersReducedMotion ? {} : {
             duration: bubble.duration,

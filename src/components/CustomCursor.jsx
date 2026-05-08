@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
+const isCoarsePointer = () =>
+  window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
+
 export function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile] = useState(isCoarsePointer);
 
   // Motion values for instant updates (zero lag)
   const cursorX = useMotionValue(-100);
@@ -14,9 +17,7 @@ export function CustomCursor() {
   const ringY = useSpring(cursorY, { stiffness: 400, damping: 28 });
 
   useEffect(() => {
-    // Disable on touch devices
-    if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768) {
-      setIsMobile(true);
+    if (isMobile) {
       return;
     }
 
@@ -45,7 +46,7 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", mouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isMobile]);
 
   if (isMobile) return null;
 

@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+
+const randomFromSeed = (seed) => {
+  const value = Math.sin(seed) * 10000;
+  return value - Math.floor(value);
+};
+
+const particles = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  x: (randomFromSeed(i + 101) - 0.5) * 140,
+  y: (randomFromSeed(i + 111) - 0.5) * 140,
+  size: randomFromSeed(i + 121) * 2.5 + 1,
+  duration: randomFromSeed(i + 131) * 3 + 2,
+  delay: randomFromSeed(i + 141) * 2
+}));
 
 export function ScrollSun() {
-  // Generate deterministic particles for data-grid look
-  const particles = useMemo(() => {
-    return Array.from({ length: 12 }).map((_, i) => ({ // Reduced particle count slightly for perf
-      id: i,
-      x: (Math.random() - 0.5) * 140, // spread %
-      y: (Math.random() - 0.5) * 140, // spread %
-      size: Math.random() * 2.5 + 1,
-      duration: Math.random() * 3 + 2,
-      delay: Math.random() * 2
-    }));
-  }, []);
-
   return (
     <motion.div 
       className="relative w-[280px] h-[280px] md:w-[380px] md:h-[380px] flex items-center justify-center scroll-sun-wrapper"
